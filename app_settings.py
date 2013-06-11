@@ -12,7 +12,7 @@ ADCIRC_MOUNTPOINT = '/data1/cera/dap'
 
 #: path to the model run NetCDFs
 ADCIRC_NETCDF_PATH = '/ncfs/opendap/data/tc/isaac/23/nc6b/blueridge.renci.org/ncfs/nhcConsensus/'
-ADCIRC_RUNID = "Isaac:23"
+ADCIRC_RUNID = "23"
 ADCIRC_YYYYMMDD = "20120826"
 DATASET_DIMENSIONS = (u'time',u'node')
 
