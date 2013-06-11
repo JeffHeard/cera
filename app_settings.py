@@ -8,7 +8,7 @@ BATHYMETRY_SOURCE_FILE = '/data1/cera/adcirc.asc'
 BATHYMETRY_INDEX_FILE = '/data1/cera/'
 
 #: path that the NetCDF output is mounted to.  no slash on the end of this one
-ADCIRC_MOUNTPOINT = '/data1/cera/dap'
+ADCIRC_MOUNTPOINT = '/projects'
 
 #: path to the model run NetCDFs
 ADCIRC_NETCDF_PATH = '/ncfs/opendap/data/tc/isaac/23/nc6b/blueridge.renci.org/ncfs/nhcConsensus/'
