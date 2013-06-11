@@ -11,7 +11,9 @@ BATHYMETRY_INDEX_FILE = '/data1/cera/'
 ADCIRC_MOUNTPOINT = '/data1/cera/dap'
 
 #: path to the model run NetCDFs
-ADCIRC_NETCDF_PATH = '/ncfs/opendap/data/blueridge.renci.org:2/PADCSWAN/nc6b/WNAMAW12-NCP/{yyyymmdd}/{runid}/'
+ADCIRC_NETCDF_PATH = '/ncfs/opendap/data/tc/isaac/23/nc6b/blueridge.renci.org/ncfs/nhcConsensus/'
+ADCIRC_RUNID = "Isaac:23"
+ADCIRC_YYYYMMDD = "20120826"
 DATASET_DIMENSIONS = (u'time',u'node')
 
 #: valid run ids.  corresponds to hours of the day.
@@ -40,7 +42,7 @@ VARIABLES = {
     "wvel"          : "wave elevation",
     "maxdir"        : "maximum mean wave direction",
     "minatmpress"   : "minimum atmospheric pressure",
-    "maxelev"       : "maximum elevation",
+    "maxele"       : "maximum elevation",
 }
 
 from celery.schedules import crontab
