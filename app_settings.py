@@ -11,13 +11,13 @@ BATHYMETRY_INDEX_FILE = '/data1/cera/'
 ADCIRC_MOUNTPOINT = '/projects'
 
 #: path to the model run NetCDFs
-ADCIRC_NETCDF_PATH = '/ncfs/opendap/data/tc/isaac/23/nc6b/blueridge.renci.org/ncfs/nhcConsensus/'
+ADCIRC_NETCDF_PATH = '/ncfs/opendap/data/tc/isaac/23/nc6b/blueridge.renci.org/ncfs/nhcConsensus/{yyyymmdd}/{runid}'
 ADCIRC_RUNID = "23"
 ADCIRC_YYYYMMDD = "20120826"
 DATASET_DIMENSIONS = (u'time',u'node')
 
 #: valid run ids.  corresponds to hours of the day.
-VALID_RUN_ID = ('00','06','12','18')
+VALID_RUN_ID = ('00','06','12','18', '23')
 
 MAXIMUM_CACHE_SIZE = 50000
 DELETE_ARRAYS_OLDER_THAN = timedelta(days=365)
