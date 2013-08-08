@@ -23,8 +23,9 @@ log = getLogger(__name__)
 def get_remote_paths(when):
     for runid in settings.VALID_RUN_ID:
         run = settings.ADCIRC_MOUNTPOINT + settings.ADCIRC_NETCDF_PATH.format(
-            yyyymmdd = when.strftime('%Y/%m/%d'),
+            yyyymmdd = when.strftime('%Y%m%d'),
             runid = runid)
+        print run
         this_run = ModelRun.objects.filter(when=when+timedelta(hours=int(runid))).first()
         if not this_run and os.path.exists(run):
             ModelRun.objects.create(when=when+timedelta(hours=int(runid)), name=run, version=when.strftime('%Y%m%d') + runid)
@@ -37,21 +38,21 @@ def get_remote_paths(when):
 
 # copy a path and gunzip it, because all netcdfs in NCFS are gzipped.
 def copy_and_expand(orig, extn):
-    log.info('copying and expanding {filename}'.format(filename=orig))
+    print ('copying and expanding {filename}'.format(filename=orig))
     tf = NamedTemporaryFile(suffix=extn)
-    os.system('gzcat "{filename}" > {tempfile}'.format(filename=orig, tempfile=tf.name))
+    os.system('cp "{filename}" {tempfile}'.format(filename=orig, tempfile=tf.name))
     return tf
 
 # copy, expand, and provide tempfiles for all the netcdf files for a particular ADCIRC run.
 def expand_all(when):
-    log.info("copying and expanding all files for the newest run.")
+    print ("copying and expanding all files for the newest run.")
     return [(runid, run, var, copy_and_expand(run + path, '.nc')) for runid, run, var, path in get_remote_paths(when)]
 
 _triangles = None
 def read_array(filename, varname, when):
     global _triangles
 
-    log.info('reading {varname} array for {when}00 from {filename} '.format(
+    print ('reading {varname} array for {when}00 from {filename} '.format(
         varname=varname,
         filename=filename,
         when=when.strftime('%Y.%m.%d.%H')
@@ -69,13 +70,13 @@ def read_array(filename, varname, when):
            if var.dimensions == settings.DATASET_DIMENSIONS:
                log.debug('loading {name} into database'.format(**locals()))
                for time in (int(t) for t in ds.variables['time']):
-                   arr = var[time,:]
+                   arr = var[:]
    
                    DataArray.objects.create(
                        basename = varname,
                        name = name,
                        long_name = var.long_name if hasattr(var, 'long_name') else name,
-                       time = when + timedelta(hours=time),
+                       time = when, # + timedelta(hours=time),
                        data = pickle.dumps(arr, protocol = -1),
                        version = when.strftime('%Y%m%d%H')
                    )
@@ -85,7 +86,7 @@ def read_array(filename, varname, when):
 
 
 def read_arrays(when):
-    log.info('reading arrays for run at {when}'.format(when=when.strftime('%Y.%m.%d.%H')))
+    print ('reading arrays for run at {when}'.format(when=when.strftime('%Y.%m.%d.%H')))
     for runid, run, var, tempfile in expand_all(when):
         read_array(tempfile.name, var, when + timedelta(hours=int(runid)))
 
@@ -136,7 +137,7 @@ def append_new_run():
             for all file in get_remote_paths
 
     """
-    log.info('appending new ADCIRC run to the database')
+    print ('appending new ADCIRC run to the database')
     read_arrays(today())
 
 # clean out old arrays
@@ -156,7 +157,7 @@ def clean_web_cache():
 @task(ignore_result=True)
 def destroy_bathymetry():
     global _index
-    log.info("Destroying bathymetry")
+    print ("Destroying bathymetry")
     if os.path.exists(settings.BATHYMETRY_INDEX_FILE + 'bathymetry.spatialite'):
         os.unlink(settings.BATHYMETRY_INDEX_FILE + 'bathymetry.spatialite')
         os.unlink(settings.BATHYMETRY_INDEX_FILE + 'bathymetry.coords.npy')

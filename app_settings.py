@@ -1,7 +1,7 @@
 #: whether or not to re-read the bathymetry on the next run.
 from datetime import timedelta
 import mongoengine
-mongoengine.register_connection('cera','cera', host='geocompute2.renci.org')
+mongoengine.register_connection('cera','cera', host='localhost')
 
 RECALCULATE_BATHYMETRY = False
 BATHYMETRY_SOURCE_FILE = '/data1/cera/adcirc.asc'
@@ -11,10 +11,10 @@ BATHYMETRY_INDEX_FILE = '/data1/cera/'
 ADCIRC_MOUNTPOINT = '/projects'
 
 #: path to the model run NetCDFs
-ADCIRC_NETCDF_PATH = '/ncfs/opendap/data/tc/isaac/23/nc6b/blueridge.renci.org/ncfs/nhcConsensus/{yyyymmdd}/{runid}'
-ADCIRC_RUNID = "23"
-ADCIRC_YYYYMMDD = "20120826"
-DATASET_DIMENSIONS = (u'time',u'node')
+ADCIRC_NETCDF_PATH='/ncfs/opendap/data/daily/nam/{yyyymmdd}{runid}/nc6b/croatan.renci.org/rentest/namforecast/'
+#ADCIRC_RUNID = "23"
+#ADCIRC_YYYYMMDD = "20120826"
+DATASET_DIMENSIONS = (u'node',)
 
 #: valid run ids.  corresponds to hours of the day.
 VALID_RUN_ID = ('00','06','12','18', '23')
@@ -34,7 +34,7 @@ VARIABLES = {
 #    "dvel"          : "water current velocity",
     "maxtmm10"      : "maximum mean wave period",
     "tmm10"         : "mean wave period",
-    "elev"          : "elevation",
+    "ele"          : "elevation",
     "maxtps"        : "maximum peak wave period",
     "tps"           : "peak wave period",
     "hsign"         : "significant wave height",

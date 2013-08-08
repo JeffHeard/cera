@@ -154,7 +154,10 @@ def bbox_mean_values_for_triangles(basename, varname, time, bbox):
     geomask = np.dstack((geomask, geomask, geomask))
     geometry.mask = geomask
 
-    means = means.compressed()
+    try:
+        means = means.compressed()
+    except:
+        pass
     geometry = geometry.compressed().reshape(means.shape[0], 3, 2)
 
     return geometry, means
